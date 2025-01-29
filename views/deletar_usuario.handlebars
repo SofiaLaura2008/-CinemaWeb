@@ -1,0 +1,36 @@
+<head>
+    <link rel="stylesheet" href="css/adicionar_filme.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Deletar Conta</h2>
+        <form method="POST" action="/deletar_usuario">
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email" class="form-control" placeholder="Digite seu e-mail" required>
+            </div>
+
+            <div class="form-group">
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" name="senha" class="form-control" placeholder="Digite sua senha" required>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-danger">Deletar Conta</button>
+            <br><br><br>
+            <a href="/perfil" class="button">Ir para o perfil</a>
+        </form>
+        {{#if success_msg}}
+            <div style="color: green; font-weight: bold;">
+                {{success_msg}}
+                <br><br><br>
+            </div>
+        {{/if}}
+
+        {{#if error_msg}}
+            <div style="color: red; font-weight: bold;">
+                {{error_msg}}
+                <br><br><br>
+            </div>
+        {{/if}}
+    </div>
+</body>

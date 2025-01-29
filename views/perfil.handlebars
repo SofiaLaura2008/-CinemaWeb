@@ -1,0 +1,49 @@
+<head>
+    <link rel="stylesheet" href="css/adicionar_filme.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Perfil de {{usuario.nome}}</h1>
+        <p><strong>Email:</strong> {{usuario.email}}</p>
+        <p><strong>Data de Nascimento:</strong> {{usuario.data_nascimento}}</p>
+        <p><strong>Admin:</strong> 
+            {{#if usuario.is_admin}}
+                Sim
+            {{else}}
+                Não
+            {{/if}}
+        </p>
+
+        <a href="/deletar_usuario" class="button">Deletar Conta</a>
+        <a href="/atualizar_usuario" class="button">Atualizar Conta</a>
+        <br><br><br>
+
+        {{#if usuario.is_admin}} 
+            <a href="/usuarios" class="button">Ver usuários cadastrados</a>
+            <a href="/filmes" class="button">Filmes</a>
+            <a href="/" class="button">Cinemas</a>
+            <a href="/" class="button">Salas</a>
+            <br><br><br>
+            <a href="/" class="button">Sessões</a>
+            <a href="/" class="button">Alimento</a>
+        {{/if}}
+
+        <br><br><br>
+        <a href="/logado" class="button">Ir para a página inicial</a>
+        <a href="/logout" class="button">Sair</a><br><br>
+
+        {{#if success_msg}}
+            <div style="color: green; font-weight: bold;">
+                {{success_msg}}
+                <br><br><br>
+            </div>
+        {{/if}}
+
+        {{#if error_msg}}
+            <div style="color: red; font-weight: bold;">
+                {{error_msg}}
+                <br><br><br>
+            </div>
+        {{/if}}
+        </div>
+    </body>

@@ -1,0 +1,52 @@
+<head>
+    <link rel="stylesheet" href="css/adicionar_filme.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Atualizar Dados do Usuário</h2>
+        <form method="POST" action="/atualizar_usuario">
+            <div class="form-group">
+                <label for="nome">Nome</label>
+                <input type="text" id="nome" name="nome" class="form-control" value="{{ usuario.nome }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email" class="form-control" value="{{ usuario.email }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="senha_atual">Senha Atual</label>
+                <input type="password" id="senha_atual" name="senha_atual" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="senha_nova">Nova Senha</label>
+                <input type="password" id="senha_nova" name="senha_nova" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="data_nascimento">Data de Nascimento</label>
+                <input type="date" id="data_nascimento" name="data_nascimento" class="form-control" value="{{ usuario.data_nascimento }}" required>
+            </div>
+            <br><br>
+            <button type="submit" class="btn btn-primary">Atualizar</button>
+            <br><br>
+            <a href="/perfil" class="btn btn-secondary">Voltar para o perfil</a>
+            <br><br>
+        </form>
+        {{#if success_msg}}
+            <div style="color: green; font-weight: bold;">
+                {{success_msg}}
+                <br><br><br>
+            </div>
+        {{/if}}
+
+        {{#if error_msg}}
+            <div style="color: red; font-weight: bold;">
+                {{error_msg}}
+                <br><br><br>
+            </div>
+        {{/if}}
+    </div>
+</body>

@@ -1,0 +1,56 @@
+<head>
+    <link rel="stylesheet" href="css/adicionar_filme.css">
+</head>
+<body>
+    <div class="container">
+            <h1>Adicionar Filme</h1>
+            <form method="POST" action="/adicionar_filmes" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="titulo">Título</label>
+                    <input type="text" id="titulo" name="titulo" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="duracao">Duração (em minutos)</label>
+                    <input type="number" id="duracao" name="duracao" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="classificacao">Classificação</label>
+                    <input type="text" id="classificacao" name="classificacao" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="genero">Gênero</label>
+                    <input type="text" id="genero" name="genero" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="data_lancamento">Data de Lançamento</label>
+                    <input type="date" id="data_lancamento" name="data_lancamento" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="foto">Foto</label>
+                    <input type="file" id="foto" name="foto" class="form-control" accept="image/*">
+                </div>
+                <br>
+                <button type="submit" class="button">Adicionar Filme</button>
+                <br><br>
+                {{#if success_msg}}
+                    <div style="color: green; font-weight: bold;">
+                        {{success_msg}}
+                        <br><br><br>
+                    </div>
+                {{/if}}
+
+                {{#if error_msg}}
+                    <div style="color: red; font-weight: bold;">
+                        {{error_msg}}
+                        <br><br><br>
+                    </div>
+                {{/if}}
+                <a href="" class="button">Voltar para o perfil</a>
+            </form>
+        </div>
+</body>

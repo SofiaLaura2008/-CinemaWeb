@@ -1,0 +1,24 @@
+<head>
+    <link rel="stylesheet" href="css/adicionar_filme.css">
+</head>
+<body>
+    <form action="/deletar_filme" method="POST">
+        <div class="container">
+            <strong><label for="titulo_atual">Escolha um Filme para Excluir:</label></strong>
+            <br><br>
+            <select id="titulo_atual" name="titulo_atual" class="form-control" required>
+            <option value="">Selecione um filme</option>
+            {{#each filmes}}
+                <option value="{{titulo}}">{{titulo}}</option>
+            {{/each}}
+            </select>
+            <br><br>
+        <button type="submit" class="btn btn-danger">Excluir Filme</button>
+        <br>
+        <a href="/filmes">Voltar para a página anterior</a>
+        </div>
+        
+    </form>
+
+
+</body>

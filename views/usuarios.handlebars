@@ -1,0 +1,32 @@
+<head>
+    <link rel="stylesheet" href="css/listar.css">
+</head>
+<body>
+    <div class="container">
+    <h1>Lista de Usuários</h1>
+    <table border="1" cellpadding="10">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Email</th>
+          <th>Data de Nascimento</th>
+          <th>Admin</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each usuarios}}
+          <tr>
+            <td>{{this.id}}</td>
+            <td>{{this.nome}}</td>
+            <td>{{this.email}}</td>
+            <td>{{this.data_nascimento}}</td>
+            <td>{{#if this.is_admin}}Sim{{else}}Não{{/if}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    <br>
+    <a href="/perfil" class="button">Voltar para a página anterior</a>
+  </div>
+</body>
