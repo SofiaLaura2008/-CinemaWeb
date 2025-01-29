@@ -1,0 +1,9 @@
+express 
+sequelize 
+sqlite3 
+handlebars 
+express-handlebars
+multer
+connect-flash
+express-session
+bcryptjs
