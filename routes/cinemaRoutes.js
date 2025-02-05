@@ -131,7 +131,7 @@ router.get('/perfil', ensureAuthenticated, async (req, res) => {
   }
 });
 
-router.get('/usuario', async (req, res) => {
+router.get('/usuarios', async (req, res) => {
   try {
     const usuario = await Usuario.findAll();
     const usuarioFormatados = usuario.map(usuario => {
