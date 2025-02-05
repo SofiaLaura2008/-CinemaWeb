@@ -1,0 +1,62 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Salas</title>
+    <link rel="stylesheet" type="text/css" href="css/listar.css">
+    <style>
+        h1{
+            color: white;
+        }
+
+        .sala_tabela {
+            align-self: center;
+            color: white;
+            margin: 0 auto;
+            width: 60%; 
+            border: 1px white;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gerenciar Salas</h1>
+        <br>
+        <table class="sala_tabela">
+            <thead>
+            <tr>
+                <th>Número</th>
+                <th>Capacidade</th>
+                <th>Cinema</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each salas}}
+                <tr>
+                    <td>{{this.numero}}</td>
+                    <td>{{this.capacidade}}</td>
+                    <td>{{this.Cinema.nome}}</td>  <!-- Acessando o nome do cinema -->
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+        {{#if success_msg}}
+            <div style="color: green; font-weight: bold;">
+                {{success_msg}}
+                <br><br><br>
+            </div>
+        {{/if}}
+
+        {{#if error_msg}}
+            <div style="color: red; font-weight: bold;">
+                {{error_msg}}
+                <br><br><br>
+            </div>
+        {{/if}}
+        <br>
+        <a href="/adicionar_sala" class="button">Adicionar Salas</a>
+        <a href="/atualizar_sala" class="button">Editar</a>
+        <a href="/deletar_sala" class="button" onclick="return confirm('Tem certeza que deseja excluir este cinema?');">Excluir</a>
+        <a href="/perfil" class="button">Voltar para o perfil</a>
+    </div>
+</body>
