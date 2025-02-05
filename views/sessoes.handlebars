@@ -1,0 +1,66 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/listar.css">
+    <title>Gerenciar Sessões</title>
+    <style>
+        h1{
+            color: white;
+        }
+
+        .sessao_tabela {
+            align-self: center;
+            color: white;
+            margin: 0 auto;
+            width: 60%; 
+            border: 1px white;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gerenciar Sessões</h1>
+        <table class="sessao_tabela">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Filme</th>
+                    <th>Sala</th>
+                    <th>Horário</th>
+                    <th>Preço</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each sessoes}}
+                    <tr>
+                        <td>{{ this.id }}</td>
+                        <td>{{ this.filme.titulo }}</td>
+                        <td>{{ this.sala.numero }}</td>
+                        <td>{{ this.horario }}</td>
+                        <td>{{ this.preco}}</td>
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
+            <br><br><br>
+            <a href="/adicionar_sessao" class="button">Adicionar nova sessão</a>
+            <a href="/atualizar_sessao" class="button">Editar</a>
+            <a href="/deletar_sessao" class="button" onclick="return confirm('Tem certeza que deseja excluir esta sessão?');">Excluir</a>
+            <a href="/perfil" class="button">Voltar para o perfil</a>
+            <br>
+            {{#if success_msg}}
+                <div style="color: green; font-weight: bold;">
+                    {{success_msg}}
+                    <br><br><br>
+                </div>
+            {{/if}}
+
+            {{#if error_msg}}
+                <div style="color: red; font-weight: bold;">
+                    {{error_msg}}
+                    <br><br><br>
+                </div>
+            {{/if}}
+    </div>
+</body>
