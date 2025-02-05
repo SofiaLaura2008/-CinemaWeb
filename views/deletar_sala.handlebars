@@ -1,0 +1,35 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/adicionar_filme.css">
+    <title>Deletar Sala</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Deletar Sala</h1>
+        <form action="/deletar_sala" method="POST">
+            <label for="id_atual">Selecione a Sala:</label>
+            <select name="id_atual" id="id_atual" required>
+            <option value="">Escolha uma sala</option>
+            {{#each salas}}
+                <option value="{{this.id}}">{{this.numero}}</option>
+            {{/each}}
+            </select>
+            <br>
+            <button type="submit">Deletar Sala</button>
+        </form>
+        {{#if success_msg}}
+            <div style="color: green; font-weight: bold;">
+                {{success_msg}}
+                <br><br><br>
+            </div>
+        {{/if}}
+
+        {{#if error_msg}}
+            <div style="color: red; font-weight: bold;">
+                {{error_msg}}
+                <br><br><br>
+            </div>
+        {{/if}}
+    </div>
+</body>
