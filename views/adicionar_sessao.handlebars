@@ -1,0 +1,59 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/adicionar_filme.css">
+    <title>Adicionar Sessão</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Adicionar Sessao</h1>
+        <form action="/adicionar_sessao" method="POST">
+            <div class="form-group">
+                <label for="filme_id">Filme:</label>
+                <select name="filme_id" id="filme_id" class="form-control" required>
+                <option value="">Selecione um filme</option>
+                {{#each filmes}}
+                    <option value="{{this.id}}">{{this.titulo}}</option>
+                {{/each}}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="sala_id">Sala:</label>
+                <select name="sala_id" id="sala_id" class="form-control" required>
+                <option value="">Selecione uma sala</option>
+                {{#each salas}}
+                    <option value="{{this.id}}">Sala {{this.numero}}</option>
+                {{/each}}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="horario">Horário:</label>
+                <input type="datetime-local" name="horario" id="horario" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="preco">Preço:</label>
+                <input type="number" name="preco" id="preco" class="form-control" step="0.01" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Adicionar Sessão</button>
+        </form>
+        <br>
+        <a href="/logado" class="button">Voltar para a página inicial</a>
+        {{#if success_msg}}
+            <div style="color: green; font-weight: bold;">
+                {{success_msg}}
+                <br><br><br>
+            </div>
+        {{/if}}
+
+        {{#if error_msg}}
+            <div style="color: red; font-weight: bold;">
+                {{error_msg}}
+                <br><br><br>
+            </div>
+        {{/if}}
+    </div>
+</body>
