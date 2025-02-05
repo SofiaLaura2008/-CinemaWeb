@@ -1,0 +1,39 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deletar Cinema</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">    
+    <link rel="stylesheet" href="css/adicionar_filme.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Deletar Cinema</h1>
+        <form action="/deletar_cinema" method="POST">
+            <div class="mb-3">
+                <label for="nome_atual" class="form-label">Selecione o cinema para deletar</label>
+                <select name="nome_atual" id="nome_atual" class="form-select" required>
+                    <option value="" disabled selected>Escolha um cinema</option>
+                    {{#each cinemas}}
+                        <option value="{{this.nome}}">{{this.nome}}</option>
+                    {{/each}}
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-danger">Deletar Cinema</button>
+            <a href="/cinemas" class="btn btn-secondary">Voltar</a>
+        </form>
+        {{#if success_msg}}
+            <div style="color: green; font-weight: bold;">
+                {{success_msg}}
+                <br><br><br>
+            </div>
+        {{/if}}
+
+        {{#if error_msg}}
+            <div style="color: red; font-weight: bold;">
+                {{error_msg}}
+                <br><br><br>
+            </div>
+        {{/if}}
+    </div>
+</body>
