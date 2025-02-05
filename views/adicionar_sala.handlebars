@@ -1,0 +1,49 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Sala</title>
+    <link rel="stylesheet" href="css/adicionar_filme.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Adicionar Sala</h1>
+        <form action="/adicionar_sala" method="POST">
+            <div>
+            <label for="numero">Número da Sala:</label>
+            <input type="number" name="numero" id="numero" required>
+            </div>
+
+            <div>
+            <label for="capacidade">Capacidade:</label>
+            <input type="number" name="capacidade" id="capacidade" required>
+            </div>
+
+            <div>
+            <label for="cinema_id">Cinema:</label>
+            <select name="cinema_id" id="cinema_id" required>
+                <option value="">Selecione um cinema</option>
+                {{#each cinemas}}
+                <option value="{{this.id}}">{{this.nome}}</option>
+                {{/each}}
+            </select>
+            </div>
+
+            <div>
+            <button type="submit">Adicionar Sala</button>
+            </div>
+        </form>
+        {{#if success_msg}}
+            <div style="color: green; font-weight: bold;">
+                {{success_msg}}
+                <br><br><br>
+            </div>
+        {{/if}}
+
+        {{#if error_msg}}
+            <div style="color: red; font-weight: bold;">
+                {{error_msg}}
+                <br><br><br>
+            </div>
+        {{/if}}
+    </div>
+</body>
