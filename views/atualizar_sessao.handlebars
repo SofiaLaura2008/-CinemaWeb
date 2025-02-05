@@ -1,0 +1,67 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atualizar Sessao</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Atualizar Sessão</h1>
+        <form class="sessao_form" action="/atualizar_sessao" method="POST">
+            <div class="input-group">
+                <label for="id_atual">Selecione a Sessão</label>
+                <select id="id_atual" name="id_atual" required>
+                    <option value="" disabled selected>Escolha uma Sessão</option>
+                    {{#each sessoes}}
+                        <option value="{{this.id}}">{{this.id}} - {{this.horario}}</option>
+                    {{/each}}
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="filme_id">Filme</label>
+                <select id="filme_id" name="filme_id">
+                    {{#each filmes}}
+                        <option value="{{this.id}}">{{this.titulo}}</option>
+                    {{/each}}
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="sala_id">Sala</label>
+                <select id="sala_id" name="sala_id">
+                    {{#each salas}}
+                        <option value="{{this.id}}">{{this.numero}}</option>
+                    {{/each}}
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="horario">Horário</label>
+                <input type="datetime-local" id="horario" name="horario" required>
+            </div>
+
+            <div class="input-group">
+                <label for="preco">Preço</label>
+                <input type="number" id="preco" name="preco" step="0.01" required>
+            </div>
+
+            <div class="input-group">
+                <button type="submit" class="button">Atualizar Sessão</button>
+            </div>
+        </form>
+
+        {{#if success_msg}}
+            <div style="color: green; font-weight: bold;">
+                {{success_msg}}
+                <br><br><br>
+            </div>
+        {{/if}}
+
+        {{#if error_msg}}
+            <div style="color: red; font-weight: bold;">
+                {{error_msg}}
+                <br><br><br>
+            </div>
+        {{/if}}
+    </div>
+</body>
