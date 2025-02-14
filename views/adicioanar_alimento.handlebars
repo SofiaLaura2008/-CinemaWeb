@@ -1,0 +1,45 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/adicionar_filme.css">
+    <title>Adicionar Alimento</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Adicionar Alimento</h1>
+        <form action="/adicionar_alimento" method="POST">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required>
+            
+            <label for="preco">Preço:</label>
+            <input type="number" step="0.01" id="preco" name="preco" required>
+            
+            <label for="quantidadeDisponível">Quantidade Disponível:</label>
+            <input type="number" id="quantidadeDisponível" name="quantidadeDisponível" required>
+            
+            <label for="tipoAlimentos">Tipo:</label>
+            <select id="tipoAlimentos" name="tipoAlimentos" required>
+                <option value="">Selecione um tipo</option>
+                <option value="Bebida">Bebida</option>
+                <option value="Comida">Comida</option>
+                <option value="Doce">Doce</option>
+                <option value="Outro">Outro</option>
+            </select>
+            
+            <button type="submit">Adicionar Alimento</button>
+        </form>
+         {{#if success_msg}}
+            <div style="color: green; font-weight: bold;">
+                {{success_msg}}
+                <br><br><br>
+            </div>
+        {{/if}}
+
+        {{#if error_msg}}
+            <div style="color: red; font-weight: bold;">
+                {{error_msg}}
+                <br><br><br>
+            </div>
+        {{/if}}
+    </div>
+</body>
