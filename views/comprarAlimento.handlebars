@@ -1,0 +1,37 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/listar.css">
+    <title>Comprar Alimentos</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Comprar Alimento</h1>
+        <form action="/comprar_alimento" method="POST">
+            <label for="alimento_id">Selecione um alimento para comprar:</label>
+            <select id="alimento_id" name="alimento_id" required>
+                <option value="">-- Escolha um alimento --</option>
+                {{#each alimentos}}
+                    <option value="{{this.id}}">{{this.nome}} - R$ {{this.preco}}</option>
+                {{/each}}
+            </select>
+
+            <label for="quantidade">Quantidade:</label>
+            <input type="number" id="quantidade" name="quantidade" min="1" required>
+            <button type="submit">Comprar</button>
+        </form>
+         {{#if success_msg}}
+            <div style="color: green; font-weight: bold;">
+                {{success_msg}}
+                <br><br><br>
+            </div>
+        {{/if}}
+
+        {{#if error_msg}}
+            <div style="color: red; font-weight: bold;">
+                {{error_msg}}
+                <br><br><br>
+            </div>
+        {{/if}}
+    </div>
+</body>
