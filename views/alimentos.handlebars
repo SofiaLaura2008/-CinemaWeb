@@ -1,0 +1,70 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/listar.css">
+    <title>Gerenciar Alimentos</title>
+    <style>
+        h1{
+            color: white;
+        }
+
+        .alimentos_tabela {
+            align-self: center;
+            color: white;
+            margin: 0 auto;
+            width: 60%; 
+            border: 1px white;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gerenciar Alimentos</h1>
+        <table class="alimentos_tabela">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Preço</th>
+                    <th>Estoque</th>
+                    <th>Tipo</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each alimentos}}
+                    <tr>
+                        <td>{{ this.id }}</td>
+                        <td>{{ this.nome }}</td>
+                        <td>{{ this.preco }}</td>
+                        <td>{{ this.quantidadeDisponível }}</td>
+                        <td>{{ this.tipoAlimentos}}</td>
+                        <td>
+                            <a href="/comprar_alimento/{{ this.id }}">Comprar</a>
+                        <td>
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
+            <br><br><br>
+            <a href="/adicionar_alimento" class="button">Adicionar novo alimento</a>
+            <a href="/atualizar_alimento" class="button">Editar</a>
+            <a href="/deletar_alimento" class="button" onclick="return confirm('Tem certeza que deseja excluir esta sessão?');">Excluir</a>
+            <a href="/perfil" class="button">Voltar para o perfil</a>
+            <br>
+            {{#if success_msg}}
+                <div style="color: green; font-weight: bold;">
+                    {{success_msg}}
+                    <br><br><br>
+                </div>
+            {{/if}}
+
+            {{#if error_msg}}
+                <div style="color: red; font-weight: bold;">
+                    {{error_msg}}
+                    <br><br><br>
+                </div>
+            {{/if}}
+    </div>
+</body>
