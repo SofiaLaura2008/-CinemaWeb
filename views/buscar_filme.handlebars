@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="css/listar.css">
+
+  <title>Buscar Filme</title>
+</head>
+<body>
+  <h1>Buscar Filme</h1>
+
+  <!-- Formulário de busca -->
+  <form action="/buscar_filme" method="get">
+    <label for="nome">Nome do Filme:</label>
+    <input type="text" id="nome" name="nome" placeholder="Digite o nome do filme" required>
+    <button type="submit">Buscar</button>
+  </form>
+
+  <!-- Mensagens de erro, se houver -->
+  {{#if error_msg}}
+    <div class="alert alert-warning">
+      <p>{{error_msg}}</p>
+    </div>
+  {{/if}}
+
+  <!-- Exibe os filmes encontrados -->
+  {{#if filmes}}
+    {{#if filmes.length}}
+      <h2>Filmes Encontrados:</h2>
+      <ul>
+        {{#each filmes}}
+          <li>{{this.nome}} - {{this.duracao}} minutos</li>
+        {{/each}}
+      </ul>
+    {{else}}
+      <p>Nenhum filme encontrado.</p>
+    {{/if}}
+  {{/if}}
+</body>
+</html>
