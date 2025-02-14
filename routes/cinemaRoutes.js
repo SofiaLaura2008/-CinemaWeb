@@ -5,12 +5,17 @@ const moment = require('moment');
 const bcrypt = require("bcryptjs"); 
 const session = require("express-session"); 
 
+const { Op } = require('sequelize');
+const Sequelize = require('../config/database'); 
+const calcularDistancia = require('../public/js/calcularDistancia'); 
+
 const Filme = require("../models/Filme");
 const Usuario = require("../models/Usuario");
 const Cinema = require("../models/Cinema");
 const Sala = require("../models/Sala");
 const Sessao = require("../models/Sessao");
 const ensureAuthenticated = require('../middleware/auth');
+const Alimento = require("../models/Alimento");
 
 const router = express.Router();
 
@@ -131,7 +136,7 @@ router.get('/perfil', ensureAuthenticated, async (req, res) => {
   }
 });
 
-router.get('/usuarios', async (req, res) => {
+router.get('/usuario', async (req, res) => {
   try {
     const usuario = await Usuario.findAll();
     const usuarioFormatados = usuario.map(usuario => {
@@ -270,7 +275,7 @@ router.get('/filmes', ensureAuthenticated, async (req, res) => {
   }
 });
 
-router.get('/atualizar_filmes', ensureAuthenticated,async (req, res) => {
+router.get('/atualizar_filmes', ensureAuthenticated,async (req, res) => {//ajustar
   try {
     const filmes = await Filme.findAll({ attributes: ['titulo'] }); 
     const filmesFormatados = filmes.map(filme => ({ titulo: filme.titulo })); 
@@ -604,10 +609,10 @@ router.get('/adicionar_sessao', ensureAuthenticated, async (req, res) => {
 });
 
 router.post('/adicionar_sessao', async (req, res) => {
-  const { filme_id, sala_id, horario, preco } = req.body;
+  const { filme_id, sala_id, horario, preco, poltronas_disponiveis } = req.body;
 
   try {
-    await Sessao.create({ filme_id, sala_id, horario, preco });
+    await Sessao.create({ filme_id, sala_id, horario, preco, poltronas_disponiveis });
     req.flash('success_msg', 'Sessão adicionada com sucesso!');
     res.redirect('/sessoes');
   } catch (error) {
@@ -664,7 +669,7 @@ router.get('/atualizar_sessao', ensureAuthenticated, async (req, res) => {
 });
 
 router.post('/atualizar_sessao', async (req, res) => {
-  const { id_atual, filme_id, sala_id, horario, preco } = req.body;
+  const { id_atual, filme_id, sala_id, horario, preco, poltronas_disponiveis } = req.body;
 
   if (!id_atual) {
     req.flash('error_msg', 'Por favor, selecione uma sessão para atualizar.');
@@ -682,7 +687,7 @@ router.post('/atualizar_sessao', async (req, res) => {
     sessao.filme_id = filme_id || sessao.filme_id;
     sessao.sala_id = sala_id || sessao.sala_id;
     sessao.horario = horario || sessao.horario;
-    sessao.preco = preco || sessao.preco;
+    sessao.poltronas_disponiveis = poltronas_disponiveis || sessao.poltronas_disponiveis;
 
     await sessao.save();
     req.flash('success_msg', 'Sessão atualizada com sucesso!');
@@ -729,5 +734,208 @@ router.post('/deletar_sessao', async (req, res) => {
   }
 });
 
+router.get('/alimentos', async (req, res) => {
+  try {
+    const alimentos = await Alimento.findAll();
+    const alimentosFormatados = alimentos.map(alimentos => alimentos.get({ plain: true }));
+    res.render('alimentos', { alimentos: alimentosFormatados });
+  } catch (error) {
+    req.flash('error_msg', 'Erro ao carregar os alimentos: ' + error.message);
+    res.redirect('/logado');
+  }
+});
+
+router.get('/adicionar_alimento', ensureAuthenticated, async (req, res) => {
+  try {
+    res.render('adicionar_alimento');
+  } catch (error) {
+    req.flash('error_msg', 'Erro ao carregar a página de adicionar alimento: ' + error.message);
+    res.redirect('/alimentos');
+  }
+});
+
+router.post('/adicionar_alimento', async (req, res) => {
+  const { nome, preco, quantidadeDisponível, tipoAlimentos } = req.body;
+
+  try {
+    await Alimento.create({ nome, preco, quantidadeDisponível, tipoAlimentos });
+    req.flash('success_msg', 'Alimento adicionado com sucesso!');
+    res.redirect('/alimentos');
+  } catch (error) {
+    req.flash('error_msg', 'Erro ao adicionar alimento: ' + error.message);
+    res.redirect('/adicionar_alimento');
+  }
+});
+
+router.get('/atualizar_alimento', ensureAuthenticated, async (req, res) => {
+  try {
+    const alimentos = await Alimento.findAll({ attributes: ['id', 'nome'] });
+    const alimentosFormatados = alimentos.map(alimento => alimento.get({ plain: true }));
+    res.render('atualizar_alimento', { alimentos: alimentosFormatados });
+  } catch (error) {
+    req.flash('error_msg', 'Erro ao carregar alimentos: ' + error.message);
+    res.redirect('/alimentos');
+  }
+});
+
+router.post('/atualizar_alimento', async (req, res) => {
+  const { id_atual, nome, preco, quantidadeDisponível, tipoAlimentos } = req.body;
+
+  if (!id_atual) {
+    req.flash('error_msg', 'Por favor, selecione um alimento para atualizar.');
+    return res.redirect('/atualizar_alimento');
+  }
+
+  try {
+    const alimento = await Alimento.findOne({ where: { id: id_atual } });
+
+    if (!alimento) {
+      req.flash('error_msg', 'Alimento não encontrado!');
+      return res.redirect('/alimentos');
+    }
+
+    alimento.nome = nome || alimento.nome;
+    alimento.preco = preco || alimento.preco;
+    alimento.quantidadeDisponível = quantidadeDisponível || alimento.quantidadeDisponível;
+    alimento.tipoAlimentos = tipoAlimentos || alimento.tipoAlimentos;
+
+    await alimento.save();
+    req.flash('success_msg', 'Alimento atualizado com sucesso!');
+    res.redirect('/alimentos');
+  } catch (error) {
+    req.flash('error_msg', 'Erro ao atualizar alimento: ' + error.message);
+    res.redirect('/atualizar_alimento');
+  }
+});
+
+router.get('/deletar_alimento', ensureAuthenticated, async (req, res) => {
+  try {
+    const alimentos = await Alimento.findAll({ attributes: ['id', 'nome'] });
+    const alimentosFormatados = alimentos.map(alimento => ({ id: alimento.id, nome: alimento.nome }));
+    res.render('deletar_alimento', { alimentos: alimentosFormatados });
+  } catch (error) {
+    req.flash('error_msg', 'Erro ao carregar alimentos: ' + error.message);
+    res.redirect('/alimentos');
+  }
+});
+
+router.post('/deletar_alimento', async (req, res) => {
+  const { id_atual } = req.body;
+
+  if (!id_atual) {
+    req.flash('error_msg', 'ID do alimento não informado.');
+    return res.redirect('/alimentos');
+  }
+
+  try {
+    const alimento = await Alimento.findOne({ where: { id: id_atual } });
+
+    if (!alimento) {
+      req.flash('error_msg', 'Alimento não encontrado!');
+      return res.redirect('/alimentos');
+    }
+
+    await alimento.destroy();
+    req.flash('success_msg', 'Alimento excluído com sucesso!');
+    res.redirect('/alimentos');
+  } catch (error) {
+    req.flash('error_msg', 'Erro ao excluir alimento: ' + error.message);
+    res.redirect('/alimentos');
+  }
+});
+
+router.get('/comprar_alimento/:id', async (req, res) => {
+  const alimentoId = req.params.id;  
+  try {
+    const alimentos = await Alimento.findAll({
+      attributes: ['id', 'nome', 'preco'], 
+      where: { quantidadeDisponível: { [Op.gt]: 0 } }, 
+    });
+
+    const alimentosFormatados = alimentos.map(alimento => alimento.get({ plain: true }));
+
+    res.render('comprarAlimento', { alimentos: alimentosFormatados });
+  } catch (error) {
+    req.flash('error_msg', 'Erro ao carregar a página de compra de alimentos: ' + error.message);
+    res.redirect('/alimentos');
+  }
+});
+
+router.post('/comprar_alimento', async (req, res) => {
+  const { alimento_id, quantidade } = req.body;  
+
+  try {
+    if (!quantidade || quantidade <= 0) {
+      req.flash('error_msg', 'Quantidade inválida.');
+      return res.redirect('/alimentos');
+    }
+
+    const alimento = await Alimento.findOne({ where: { id: alimento_id } });
+
+    if (!alimento) {
+      req.flash('error_msg', 'Alimento não encontrado!');
+      return res.redirect('/alimentos');
+    }
+
+    if (alimento.quantidadeDisponível < quantidade) {
+      req.flash('error_msg', `Desculpe, só há ${alimento.quantidadeDisponível} unidades desse alimento em estoque.`);
+      return res.redirect('/alimentos');
+    }
+
+    alimento.quantidadeDisponível -= quantidade;
+    await alimento.save();
+
+    req.flash('success_msg', `Você comprou ${quantidade} unidade(s) do alimento ${alimento.nome} por R$ ${alimento.preco * quantidade}`);
+    res.redirect('/alimentos');
+  } catch (error) {
+    req.flash('error_msg', 'Erro ao realizar a compra: ' + error.message);
+    res.redirect('/alimentos');
+  }
+});
+
+router.get('/buscar_filme', (req, res) => {
+  res.render('buscar_filme'); 
+});
+
+router.get('/buscar_filme', async (req, res) => { //ajustar
+  const { nome } = req.query; 
+
+  try {
+    if (!nome) {
+      req.flash('error_msg', 'Por favor, insira um nome de filme para a busca.');
+      return res.redirect('/buscar_filme'); 
+    }
+
+    console.log('Nome do filme:', nome); 
+
+    const filmes = await Filme.findAll({
+      where: {
+        nome: {
+          [Op.iLike]: `%${nome}%` 
+        }
+      }
+    });
+
+    console.log('Filmes encontrados:', filmes); 
+    if (filmes.length === 0) {
+      req.flash('error_msg', 'Nenhum filme encontrado.');
+      return res.render('buscar_filme', { filmes: [] }); 
+    }
+
+    res.render('buscar_filme', { filmes });
+  } catch (error) {
+    req.flash('error_msg', 'Erro ao buscar filmes: ' + error.message);
+    console.log(error.message);
+    res.redirect('/logado'); 
+  }
+});
+
+router.get('/vip', async(req, res) =>{
+  res.render('Vip')
+})
+
+router.get('/filmesFavoritos', async(req, res) =>{
+  res.render('favoritos')
+})
 
 module.exports = router;
